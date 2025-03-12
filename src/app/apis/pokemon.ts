@@ -1,5 +1,6 @@
 export type Pokemon = {
 	name: string;
+	id: number;
 	sprites: {
 		front_default: string;
 	};
@@ -14,7 +15,7 @@ export type PokemonListResponse = {
 	}[];
 };
 
-export const QUERY_KEY = 'pokemonList';
+export const QUERY_KEY_POKEMON_LIST = 'pokemonList';
 export const LIMIT = 20;
 
 export const fetchPokemonList = async (
@@ -31,5 +32,19 @@ export const fetchPokemonList = async (
 	} catch (error) {
 		console.error('Failed to fetch Pokémon List', error);
 		return [];
+	}
+};
+
+export const QUERY_KEY_POKEMON_DETAIL = 'pokemonDetail';
+export const fetchPokemonDetail = (
+	id: number | string,
+): Promise<Pokemon | null> => {
+	try {
+		return fetch(`https://pokeapi.co/api/v2/pokemon/${id}`).then((res) =>
+			res.json(),
+		);
+	} catch (error) {
+		console.error('Failed to fetch Pokémon Detail', error);
+		return Promise.resolve(null);
 	}
 };
