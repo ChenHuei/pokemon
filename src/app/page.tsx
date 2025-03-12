@@ -1,11 +1,11 @@
 'use client';
 
 import Image from 'next/image';
+import Link from 'next/link';
 import { useCallback, useRef } from 'react';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { fetchPokemonList, QUERY_KEY_POKEMON_LIST } from '@/apis/pokemon';
 import Title from '@/components/Title';
-import Link from 'next/link';
 
 export default function Home() {
 	const observer = useRef<IntersectionObserver | null>(null);
@@ -35,8 +35,7 @@ export default function Home() {
 
 	return (
 		<div>
-			<Title>Pokémon</Title>
-			<div className="grid grid-cols-3 gap-4 px-4">
+			<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 px-4">
 				{pokemonList.map(({ name, id, sprites: { front_default: url } }, i) => (
 					<Link key={name} href={`/pokemon/${id}`}>
 						<div
