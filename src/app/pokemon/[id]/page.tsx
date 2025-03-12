@@ -3,11 +3,8 @@
 import Image from 'next/image';
 import { useParams, useRouter } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
-import {
-	QUERY_KEY_POKEMON_DETAIL,
-	fetchPokemonDetail,
-} from '@/app/apis/pokemon';
-import Title from '@/app/components/Title';
+import { QUERY_KEY_POKEMON_DETAIL, fetchPokemonDetail } from '@/apis/pokemon';
+import Title from '@/components/Title';
 
 const PokemonDetail = () => {
 	const router = useRouter();
@@ -35,7 +32,7 @@ const PokemonDetail = () => {
 				width={200}
 			/>
 			<button
-				className="p-4 border rounded-2xl cursor-pointer hover:opacity-80 transition-opacity duration-300"
+				className="p-4 border rounded-2xl capitalize cursor-pointer hover:opacity-80 transition-opacity duration-300"
 				onClick={() => router.back()}>
 				back to list
 			</button>

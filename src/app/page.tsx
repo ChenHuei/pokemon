@@ -3,8 +3,8 @@
 import Image from 'next/image';
 import { useCallback, useRef } from 'react';
 import { useInfiniteQuery } from '@tanstack/react-query';
-import { fetchPokemonList, QUERY_KEY_POKEMON_LIST } from '@/app/apis/pokemon';
-import Title from '@/app/components/Title';
+import { fetchPokemonList, QUERY_KEY_POKEMON_LIST } from '@/apis/pokemon';
+import Title from '@/components/Title';
 import Link from 'next/link';
 
 export default function Home() {
