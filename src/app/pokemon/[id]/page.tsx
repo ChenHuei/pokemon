@@ -1,42 +1,21 @@
 'use client';
 
-import Image from 'next/image';
-import { useParams, useRouter } from 'next/navigation';
-import { useQuery } from '@tanstack/react-query';
-import { QUERY_KEY_POKEMON_DETAIL, fetchPokemonDetail } from '@/apis/pokemon';
-import Title from '@/components/Title';
+import { use } from 'react';
+import { useRouter } from 'next/navigation';
+import PokemonDetailContent from './components/Content';
 
-const PokemonDetail = () => {
+const PokemonDetail = (props: { params: Promise<{ id: string }> }) => {
 	const router = useRouter();
-	const params = useParams<{ id: string }>();
-
-	const { data, isLoading, isError } = useQuery({
-		queryKey: [QUERY_KEY_POKEMON_DETAIL, params.id],
-		queryFn: () => fetchPokemonDetail(params.id),
-		enabled: Boolean(params.id),
-	});
-
-	if (isLoading) return <Title>Loading...</Title>;
-	if (isError || !data)
-		return <Title className="text-red-500">無法獲取數據</Title>;
+	const { id } = use(props.params);
 
 	return (
-		<div className="grid grid-cols-1 gap-4 p-4">
-			<Title>
-				#{`${data.id}`.padStart(4, '0')} - {data.name}
-			</Title>
-			<Image
-				src={data.sprites.front_default}
-				alt={data.name}
-				height={200}
-				width={200}
-			/>
+		<PokemonDetailContent id={id}>
 			<button
 				className="p-4 border rounded-2xl capitalize cursor-pointer hover:opacity-80 transition-opacity duration-300"
 				onClick={() => router.back()}>
 				back to list
 			</button>
-		</div>
+		</PokemonDetailContent>
 	);
 };
 
