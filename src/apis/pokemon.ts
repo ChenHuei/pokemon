@@ -67,9 +67,9 @@ export const fetchPokemonDetail = async (
 	id: number | string,
 ): Promise<Pokemon | null> => {
 	try {
-		const response = fetch(`https://pokeapi.co/api/v2/pokemon/${id}`).then(
-			(res) => res.json(),
-		);
+		const response = await fetch(
+			`https://pokeapi.co/api/v2/pokemon/${id}`,
+		).then((res) => res.json());
 
 		const parsed = PokemonSchema.safeParse(response);
 		if (!parsed.success) {
