@@ -15,7 +15,7 @@ const Title = <T extends ElementType = 'h1'>({
 
 	return (
 		<Component
-			className={`w-full my-8 text-center text-4xl ${className}`}
+			className={`w-full my-8 text-center text-4xl capitalize ${className}`}
 			{...props}>
 			{children}
 		</Component>

@@ -41,7 +41,7 @@ export default function Home() {
 					<Link key={name} href={`/pokemon/${id}`}>
 						<div
 							ref={i === pokemonList.length - 1 ? lastElementRef : null}
-							className="flex flex-col items-center cursor-pointer hover:opacity-80 transition-opacity duration-300">
+							className="flex flex-col items-center capitalize cursor-pointer hover:opacity-80 transition-opacity duration-300">
 							<Image src={url} alt={name} width={100} height={100} />
 							<p>{name}</p>
 						</div>
