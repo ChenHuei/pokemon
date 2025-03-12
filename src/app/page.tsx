@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { useCallback, useRef } from 'react';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { fetchPokemonList, QUERY_KEY } from './apis/pokemon';
+import Title from './components/Title';
 
 export default function Home() {
 	const observer = useRef<IntersectionObserver | null>(null);
@@ -33,7 +34,7 @@ export default function Home() {
 
 	return (
 		<div>
-			<h1 className="w-full my-8 text-center text-4xl">Pokémon</h1>
+			<Title>Pokémon</Title>
 			<div className="grid grid-cols-3 gap-4 px-4">
 				{pokemonList.map(({ name, sprites: { front_default: url } }, i) => (
 					<div
@@ -45,9 +46,7 @@ export default function Home() {
 					</div>
 				))}
 			</div>
-			{isFetchingNextPage && (
-				<div className="w-full my-8 text-center text-xl">Loading...</div>
-			)}
+			{isFetchingNextPage && <Title className="text-xl">Loading...</Title>}
 		</div>
 	);
 }
