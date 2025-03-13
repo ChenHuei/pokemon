@@ -1,4 +1,4 @@
-name: Deploy Next.js site to Pages
+name: Deploy Next.js 15 to GitHub Pages
 
 on:
   push:
@@ -18,55 +18,41 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      # ✅ 確保 pnpm 正確安裝
+      # ✅ 設定 pnpm（確保正確安裝）
       - name: Setup pnpm
         uses: pnpm/action-setup@v2
         with:
           version: latest
 
+      # ✅ 設定 Node.js 22.13.0
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22.13.0'
           cache: 'pnpm'
 
+      # ✅ 確保 Corepack 正確啟用（確保 `pnpm` 正常運作）
       - name: Enable Corepack (for pnpm)
         run: corepack enable
 
-      - name: Detect package manager
-        id: detect-package-manager
-        run: |
-          if [ -f "${{ github.workspace }}/pnpm-lock.yaml" ]; then
-            echo "manager=pnpm" >> $GITHUB_OUTPUT
-            echo "command=install --frozen-lockfile" >> $GITHUB_OUTPUT
-            echo "runner=pnpm exec" >> $GITHUB_OUTPUT
-          else
-            echo "Unable to determine package manager"
-            exit 1
-          fi
+      # ✅ 安裝 dependencies
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
 
+      # ✅ 設定 GitHub Pages，確保 Next.js 正確運行
       - name: Setup Pages
         uses: actions/configure-pages@v5
         with:
           static_site_generator: next
 
-      - name: Restore cache
-        uses: actions/cache@v4
-        with:
-          path: .next/cache
-          key: ${{ runner.os }}-nextjs-${{ hashFiles('**/pnpm-lock.yaml') }}-${{ hashFiles('**.[jt]s', '**.[jt]sx') }}
-          restore-keys: |
-            ${{ runner.os }}-nextjs-${{ hashFiles('**/pnpm-lock.yaml') }}-
-
-      - name: Install dependencies with pnpm
-        run: pnpm install --frozen-lockfile
-
-      - name: Build with Next.js
+      # ✅ 建置 Next.js 專案
+      - name: Build and Export Next.js
         run: pnpm exec next build && pnpm exec next export
 
+      # ✅ 上傳靜態檔案到 artifact，準備部署
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
