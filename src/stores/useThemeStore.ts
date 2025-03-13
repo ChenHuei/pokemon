@@ -7,6 +7,7 @@ interface ThemeStore {
 	theme: Theme;
 	setTheme: (theme: Theme) => void;
 	resolvedTheme: 'light' | 'dark';
+	initializeTheme: () => void; // ✅ 初始化時應用主題
 }
 
 export const useThemeStore = create<ThemeStore>()(
@@ -22,13 +23,26 @@ export const useThemeStore = create<ThemeStore>()(
 					theme === 'system' ? get().resolvedTheme : theme,
 				);
 			},
+			resolvedTheme: 'light', // 預設為 light
+			initializeTheme: () => {
+				const savedTheme = get().theme; // 從 `zustand persist` 讀取
+				const systemIsDark = window.matchMedia(
+					'(prefers-color-scheme: dark)',
+				).matches;
 
-			resolvedTheme:
-				typeof window !== 'undefined'
-					? window.matchMedia('(prefers-color-scheme: dark)').matches
-						? 'dark'
-						: 'light'
-					: 'light', // 預設為 light
+				// ✅ 確保 `resolvedTheme` 正確
+				set({ resolvedTheme: systemIsDark ? 'dark' : 'light' });
+
+				// ✅ 立即設定 HTML `class`
+				document.documentElement.classList.remove('light', 'dark');
+				document.documentElement.classList.add(
+					savedTheme === 'system'
+						? systemIsDark
+							? 'dark'
+							: 'light'
+						: savedTheme,
+				);
+			},
 		}),
 		{
 			name: 'theme', // ✅ localStorage key 名稱

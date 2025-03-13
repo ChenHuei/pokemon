@@ -1,10 +1,15 @@
 'use client';
 import { useThemeStore } from '@/stores/useThemeStore';
+import { useEffect } from 'react';
 
 const COMMON_CLASS =
 	'p-2 rounded cursor-pointer hover:opacity-80 transition-opacity duration-300';
 const Theme = () => {
-	const { theme, setTheme } = useThemeStore();
+	const { theme, setTheme, initializeTheme } = useThemeStore();
+
+	useEffect(() => {
+		initializeTheme(); // ✅ 在應用啟動時立即設定 `dark` / `light`
+	}, [initializeTheme]);
 
 	return (
 		<div className="flex gap-2">
